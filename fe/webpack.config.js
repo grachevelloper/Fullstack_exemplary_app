@@ -62,8 +62,13 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.json', '.ts', '.tsx', '.jsx'],
         alias: {
-            "@": path.resolve(__dirname, 'src'),
-            "@pages": path.resolve(__dirname, 'src/ui/pages'),
+            "@/pages": path.resolve(__dirname, 'src/pages'),
+            "@/todos": path.resolve(__dirname, 'src/units/todos'),
+            "@/users": path.resolve(__dirname, 'src/units/users'),
+            "@/tests": path.resolve(__dirname, 'src/__test__'),
+            "@/utils": path.resolve(__dirname, 'src/utils'),
+            "@/shared": path.resolve(__dirname, 'src/shared'),
+            "@/locales": path.resolve(__dirname, 'src/locales')
         }
     },
     optimization: optimization(),
@@ -71,9 +76,15 @@ module.exports = {
         port: FE_PORT || 5173,
         hot: isDev,
         historyApiFallback: true,
-        static: {
-            directory: path.join(__dirname, 'dist')
-        }
+        static: [
+            {
+                directory: path.join(__dirname, 'dist')
+            },
+            {
+                directory: path.join(__dirname, 'public'),
+                publicPath: '/'
+            }
+        ]
     },
     plugins: [
         new HTMLWebpackPlugin({

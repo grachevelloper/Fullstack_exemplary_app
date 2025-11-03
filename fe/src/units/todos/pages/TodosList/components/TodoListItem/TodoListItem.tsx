@@ -16,7 +16,7 @@ export const TodoListItem = ({ todo }: TodoListItemProps) => {
         isActive
     } = todo
 
-    const { t } = useTranslation(["todo"])
+    const { t } = useTranslation("todo")
 
     const editTitleConfig = {
         icon: <EditOutlined />,
@@ -25,7 +25,6 @@ export const TodoListItem = ({ todo }: TodoListItemProps) => {
         text: '3',
     };
 
-    const priorityT = priority.toLowerCase();
 
     return (
         <Flex
@@ -42,7 +41,7 @@ export const TodoListItem = ({ todo }: TodoListItemProps) => {
             <Typography.Title
                 editable={isActive}
             >
-                {/* {t(`todo.?`)} */}
+                {t(`todo.priority.${priority}`)}
             </Typography.Title>
 
         </Flex>

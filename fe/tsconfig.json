@@ -5,6 +5,7 @@
         "target": "ES2020",
         "module": "ESNext",
         "moduleResolution": "node",
+        "resolveJsonModule": true,
         "baseUrl": "./",
         "removeComments": true,
         "allowSyntheticDefaultImports": true,
@@ -21,9 +22,15 @@
         "noUncheckedIndexedAccess": true,
         "skipLibCheck": true,
         "paths": {
-            "@pages/*": ["src/ui/pages/*"]
+            "@/todos/*": ["src/units/todos/*"],
+            "@/users/*": ["src/units/users/*"],
+            "@/shared/*": ["src/shared/*"],
+            "@/typings/*": ["src/typings/*"],
+            "@/test/*": ["src/__test__/*"],
+            "@/utils/*": ["src/utils/*"],
+            "@/locales/*": ["src/locales/*"]
         }
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "/types/**/*"],
     "exclude": ["node_modules", "dist"]
 }

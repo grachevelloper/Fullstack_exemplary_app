@@ -5,7 +5,7 @@ export enum TodoPriority {
 }
 
 export enum TodoState {
-    IN_WORK = 'inWork',
+    IN_WORK = 'in_work',
     PLANNING = 'planning',
     FINISHED = 'finished',
     CANCELED = 'canceled',

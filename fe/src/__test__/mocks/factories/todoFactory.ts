@@ -1,9 +1,8 @@
-import {TodoPriority, Todo, TodoState} from 'src/units/todos/types/todo';
-import {useId} from 'react';
+import {TodoPriority, Todo, TodoState} from '@/todos/types/todo';
 
 export const createMockTodo = (overrides: Partial<Todo>): Todo => {
-    const id = useId();
-    const userId = useId();
+    const id = `todo-${Math.floor(Math.random() * 10) + 1}`;
+    const userId = `user-${Math.floor(Math.random() * 10) + 1}`;
     return {
         id,
         createdAt: new Date(Date.now()),

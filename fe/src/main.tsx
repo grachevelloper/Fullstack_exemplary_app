@@ -1,7 +1,5 @@
 import '@/locales';
 import 'antd/dist/reset.css';
-
-import React from 'react';
 import {createRoot} from 'react-dom/client';
 
 import {worker} from './__test__/mocks';
@@ -12,6 +10,10 @@ const root = createRoot(container!);
 
 const enableMocking = async () => {
     if (process.env.NODE_ENV !== 'development') {
+        return;
+    }
+
+    if (process.env.REACT_APP_ENABLE_MOCKS !== 'true') {
         return;
     }
 

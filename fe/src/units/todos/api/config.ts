@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, {AxiosInstance} from 'axios';
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: `/api`,
@@ -10,7 +10,7 @@ axiosInstance.interceptors.response.use(
     (response) => response.data,
     (error) => {
         console.error('Error from backend');
-        return Promise.reject(error);
+        return new Promise.reject(error);
     }
 );
 

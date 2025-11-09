@@ -1,1 +1,1 @@
-export {TodosListPageWrapper} from './TodosListWrapper';
+export {TodosListPage} from './TodosListPage';

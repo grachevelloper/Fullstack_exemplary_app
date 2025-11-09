@@ -1,8 +1,7 @@
-import {observer} from 'mobx-react';
 import {useCallback, useRef} from 'react';
 
 import {Priority} from '@/todos/components/Priority';
-import {useTodosStore} from '@/todos/hooks/useStore';
+import {useTodoMutation, useTodoQuery} from '@/todos/hooks';
 import {TodoPriority} from '@/todos/types';
 
 interface TodoStateCellProps {
@@ -23,27 +22,25 @@ const switchNewPriority = (priority: TodoPriority): TodoPriority => {
     }
 };
 
-export const PriorityCell = observer(
-    ({priority, todoId}: TodoStateCellProps) => {
-        const store = useTodosStore();
-        const {isPending} = store.getTodoById(todoId);
-        const isEdited = useRef<boolean>(false);
+export const PriorityCell = ({priority, todoId}: TodoStateCellProps) => {
+    const {isPending} = useTodoQuery(todoId);
+    const {mutateAsync} = useTodoMutation();
+    const isEdited = useRef<boolean>(false);
 
-        const handleUpdatePriority = useCallback(() => {
-            isEdited.current = true;
-            store.updateTodoById({
-                id: todoId,
-                priority: switchNewPriority(priority),
-            });
-        }, [todoId, isEdited, store]);
+    const handleUpdatePriority = useCallback(() => {
+        isEdited.current = true;
+        mutateAsync({
+            id: todoId,
+            priority: switchNewPriority(priority),
+        });
+    }, [todoId, isEdited]);
 
-        return (
-            <Priority
-                priority={priority}
-                editable={{isEdited: isEdited.current}}
-                onClick={handleUpdatePriority}
-                isLoading={isPending}
-            />
-        );
-    }
-);
+    return (
+        <Priority
+            priority={priority}
+            editable={{isEdited: isEdited.current}}
+            onClick={handleUpdatePriority}
+            isLoading={isPending}
+        />
+    );
+};

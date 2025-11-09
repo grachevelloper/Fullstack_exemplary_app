@@ -1,8 +1,7 @@
-import {observer} from 'mobx-react';
 import {useCallback, useRef} from 'react';
 
 import {State} from '@/todos/components/State';
-import {useTodosStore} from '@/todos/hooks/useStore';
+import {useTodoMutation, useTodoQuery} from '@/todos/hooks';
 import {TodoState} from '@/todos/types';
 
 interface TodoStateCellProps {
@@ -23,20 +22,20 @@ const switchNewState = (state: TodoState): TodoState => {
     }
 };
 
-export const StateCell = observer(({state, todoId}: TodoStateCellProps) => {
-    const store = useTodosStore();
-    const {isPending} = store.getTodoById(todoId);
+export const StateCell = ({state, todoId}: TodoStateCellProps) => {
     const isEdited = useRef<boolean>(false);
+    const {mutateAsync} = useTodoMutation();
+    const {isPending} = useTodoQuery(todoId);
 
     const stateRef = useRef<HTMLButtonElement>(null);
 
     const handleUpdateState = useCallback(() => {
         isEdited.current = true;
-        store.updateTodoById({
+        mutateAsync({
             id: todoId,
             state: switchNewState(state),
         });
-    }, [todoId, isEdited, store]);
+    }, [todoId, isEdited]);
 
     return (
         <State
@@ -47,4 +46,4 @@ export const StateCell = observer(({state, todoId}: TodoStateCellProps) => {
             isLoading={isPending}
         />
     );
-});
+};

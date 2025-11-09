@@ -62,6 +62,7 @@ export default defineConfig([
     reactPlugin.configs.flat.recommended,
     {
         rules: {
+            '@typescript-eslint/only-throw-error': 'off',
             '@typescript-eslint/no-unused-vars': 'warn',
             'react/display-name': 'off',
             '@typescript-eslint/explicit-function-return-type': 'off',
@@ -80,10 +81,19 @@ export default defineConfig([
                         'builtin',
                         'external',
                         'internal',
-                        ['parent', 'sibling'],
+                        'parent',
+                        'sibling',
                         'index',
                         'object',
                     ],
+                    pathGroups: [
+                        {
+                            pattern: '@/**',
+                            group: 'internal',
+                            position: 'before',
+                        },
+                    ],
+                    pathGroupsExcludedImportTypes: ['internal'],
                     'newlines-between': 'always',
                     alphabetize: {
                         order: 'asc',

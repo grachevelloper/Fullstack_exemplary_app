@@ -17,7 +17,6 @@ export interface Todo {
     title: string;
     content: string;
     authorId: string;
-    isActive: boolean;
     priority: TodoPriority;
     state: TodoState;
     createdAt?: Date;

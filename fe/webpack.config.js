@@ -109,6 +109,9 @@ module.exports = {
         }),
         isDev && new ReactRefreshWebpackPlugin(),
         isDev && new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            'process.env': JSON.stringify(process.env),
+        }),
     ].filter(Boolean),
     module: {
         rules: [

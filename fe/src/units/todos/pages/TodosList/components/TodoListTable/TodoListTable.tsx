@@ -1,12 +1,15 @@
 import {Table} from 'antd';
 import {type ColumnsType} from 'antd/es/table';
-import {observer} from 'mobx-react';
+import block from 'bem-cn-lite';
 import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router-dom';
 
 import {Todo, TodoPriority, TodoState} from '@/todos/types';
 
 import {PriorityCell} from './components/PriorityCell';
 import {StateCell} from './components/StateCell';
+
+const b = block('todo-list-table');
 
 import './TodoListTable.scss';
 
@@ -19,8 +22,10 @@ type TodoTableColumns = Pick<
     'title' | 'createdAt' | 'updatedAt' | 'priority' | 'state' | 'id'
 >;
 
-export const TodoListTable = observer(({todos}: TodoListTableProps) => {
+export const TodoListTable = ({todos}: TodoListTableProps) => {
     const {t} = useTranslation('todo');
+
+    const navigate = useNavigate();
 
     const columns: ColumnsType<TodoTableColumns> = [
         {
@@ -62,5 +67,22 @@ export const TodoListTable = observer(({todos}: TodoListTableProps) => {
         },
     ];
 
-    return <Table<TodoTableColumns> columns={columns} dataSource={todos} />;
-});
+    const handleRowClick = (index?: number) => {
+        if (index) {
+            navigate(`/${index}`);
+        }
+    };
+
+    return (
+        <Table<TodoTableColumns>
+            columns={columns}
+            dataSource={todos}
+            rowClassName={b('row')}
+            onRow={(_record, rowIndex) => {
+                return {
+                    onClick: () => handleRowClick(rowIndex),
+                };
+            }}
+        />
+    );
+};

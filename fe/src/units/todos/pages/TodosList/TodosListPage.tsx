@@ -1,18 +1,9 @@
-import {observer} from 'mobx-react';
-
-import {useTodosStore} from '@/todos/hooks/useStore';
+import {useTodosQuery} from '@/todos/hooks';
 
 import {TodoListTable} from './components/TodoListTable';
 
-export const TodosListPage = observer(() => {
-    const store = useTodosStore();
-    const {data: todos, isPending, isError} = store.listTodosQuery();
+export const TodosListPage = () => {
+    const {data: todos} = useTodosQuery();
 
-    if (isPending) return <div>Loading...</div>;
-    if (isError) return <div>Error loading todos</div>;
-    return (
-        <div>
-            <TodoListTable todos={todos} />
-        </div>
-    );
-});
+    return <TodoListTable todos={todos} />;
+};

@@ -2,7 +2,6 @@ import './State.scss';
 
 import {Button} from 'antd';
 import block from 'bem-cn-lite';
-import {observer} from 'mobx-react';
 import {forwardRef, Fragment} from 'react';
 import {useTranslation} from 'react-i18next';
 
@@ -32,15 +31,14 @@ const getColor = (state: TodoState) => {
     }
 };
 
-export const State = observer(
-    forwardRef<HTMLButtonElement, StateProps>(
-        ({state, editable, onClick, isLoading}, ref) => {
-            const {t} = useTranslation('todo');
+export const State = forwardRef<HTMLButtonElement, StateProps>(
+    ({state, editable, onClick, isLoading}, ref) => {
+        const {t} = useTranslation('todo');
 
-            const isEdited = editable && editable?.isEdited;
-            return (
-                <Fragment>
-                    {/* {isRotated ? (
+        const isEdited = editable && editable?.isEdited;
+        return (
+            <Fragment>
+                {/* {isRotated ? (
                 <Lottie
                     animationData={fireAnimation}
                     style={{
@@ -52,21 +50,20 @@ export const State = observer(
                     loop={false}
                 />
             ) : null} */}
-                    <Button
-                        className={b({
-                            'is-edited': isEdited,
-                        })}
-                        onClick={onClick}
-                        type='primary'
-                        color={getColor(state)}
-                        variant='solid'
-                        loading={isLoading}
-                        ref={ref}
-                    >
-                        {t(`todo.state.${state}`)}
-                    </Button>
-                </Fragment>
-            );
-        }
-    )
+                <Button
+                    className={b({
+                        'is-edited': isEdited,
+                    })}
+                    onClick={onClick}
+                    type='primary'
+                    color={getColor(state)}
+                    variant='solid'
+                    loading={isLoading}
+                    ref={ref}
+                >
+                    {t(`todo.state.${state}`)}
+                </Button>
+            </Fragment>
+        );
+    }
 );

@@ -12,6 +12,12 @@ import {JWT_SECRET} from "@/auth/constants";
 
 import {IS_PUBLIC_KEY} from "../utils/auth";
 
+interface JwtPayload {
+    sub: string;
+    iat: number;
+    exp: number;
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
@@ -32,16 +38,25 @@ export class AuthGuard implements CanActivate {
         const req: Request = context.switchToHttp().getRequest();
 
         const token = req.cookies.accessToken;
-        console.log("Refresh token received:", req.cookies);
         if (!token) {
             throw new UnauthorizedException();
         }
 
         try {
-            const payload = await this.jwtService.verifyAsync(token, {
-                secret: JWT_SECRET,
-            });
-            req["user"] = payload;
+            const payload = await this.jwtService.verifyAsync<JwtPayload>(
+                token,
+                {
+                    secret: JWT_SECRET,
+                },
+            );
+
+            const user = {
+                id: payload.sub,
+                iat: payload.iat,
+                exp: payload.exp,
+            };
+
+            req["user"] = user;
         } catch {
             throw new UnauthorizedException();
         }

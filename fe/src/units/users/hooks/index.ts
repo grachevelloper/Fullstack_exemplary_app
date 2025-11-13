@@ -12,6 +12,13 @@ export const useSignUpMutation = () => {
     });
 };
 
+export const useLogoutMutation = () => {
+    return useMutation({
+        mutationKey: ['logout'],
+        mutationFn: () => api.logout(),
+    });
+};
+
 export const useSignInQuery = (signInData: DtoSignInUser) => {
     const {data, isPending, isError} = useQuery(
         {

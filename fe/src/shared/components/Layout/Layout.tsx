@@ -1,39 +1,57 @@
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
-} from '@ant-design/icons';
+import {BulbOutlined, HomeOutlined, LogoutOutlined} from '@ant-design/icons';
 import {QueryErrorResetBoundary} from '@tanstack/react-query';
-import {Layout as AntLayout, Button, Menu, theme} from 'antd';
+import {Layout as AntLayout, Button, Menu, theme, Tooltip} from 'antd';
+import {MenuItemType} from 'antd/es/menu/interface';
 import block from 'bem-cn-lite';
-import React, {useState} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
-import {Outlet} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {Outlet, useNavigate} from 'react-router-dom';
+
+import {useLogoutMutation} from '@/users/hooks';
+
+import {useTodoForm} from '../../context';
+import {NewTodoForm} from '../NewTodoForm';
 
 import './Layout.scss';
 
-const b = block('laout');
-
-const items = [
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    UserOutlined,
-].map((icon, index) => ({
-    key: String(index + 1),
-    icon: React.createElement(icon),
-    label: `nav ${index + 1}`,
-}));
+const b = block('layout');
 
 const {Header, Content, Sider} = AntLayout;
 
 export const Layout = () => {
-    const [collapsed, setCollapsed] = useState(false);
+    const {t} = useTranslation('common');
+    const {setIsOpen} = useTodoForm();
+    const {mutateAsync, isPending, isError} = useLogoutMutation();
+    const navigate = useNavigate();
     const {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
+
+    const leftItems: MenuItemType[] = [
+        {
+            icon: <BulbOutlined />,
+            label: t('layout.left.suggest'),
+            key: 'action-0',
+            onClick: () => {
+                setIsOpen(true);
+            },
+        },
+    ];
+
+    const topItems: MenuItemType[] = [
+        {
+            icon: <HomeOutlined />,
+            label: t('layout.top.main'),
+            key: 'nav-0',
+            onClick: () => {
+                navigate('/todos');
+            },
+        },
+    ];
+
+    const handleLogout = async () => {
+        await mutateAsync();
+    };
     return (
         <QueryErrorResetBoundary>
             {({reset}) => (
@@ -49,27 +67,29 @@ export const Layout = () => {
                     )}
                 >
                     <AntLayout rootClassName={b()}>
+                        <NewTodoForm />
                         <Sider breakpoint='lg' collapsedWidth='0' theme='light'>
                             <Menu
                                 theme='light'
                                 mode='inline'
-                                defaultSelectedKeys={['1']}
-                                items={items}
+                                items={leftItems}
                             />
                         </Sider>
                         <AntLayout>
-                            <Header>
-                                <Button
-                                    type='text'
-                                    icon={
-                                        collapsed ? (
-                                            <MenuUnfoldOutlined />
-                                        ) : (
-                                            <MenuFoldOutlined />
-                                        )
-                                    }
-                                    onClick={() => setCollapsed(!collapsed)}
+                            <Header className={b('header')}>
+                                <Menu
+                                    theme='light'
+                                    mode='inline'
+                                    items={topItems}
+                                    defaultSelectedKeys={[]}
+                                    rootClassName={b('menu')}
                                 />
+                                <Tooltip title={t('logout')}>
+                                    <LogoutOutlined
+                                        onClick={handleLogout}
+                                        className={b('logout-icon')}
+                                    />
+                                </Tooltip>
                             </Header>
                             <Content>
                                 <Outlet />

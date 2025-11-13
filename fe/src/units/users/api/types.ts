@@ -1,6 +1,6 @@
-import { Tokens } from '@/typings/common';
+import {Tokens} from '@/typings/common';
 
-import { User } from '../types';
+import {User} from '../types';
 
 export type SignResponse = Tokens & User;
 
@@ -25,6 +25,7 @@ export interface ResponseYandex0Auth {
 export interface UserApi {
     signIn: (signInData: DtoSignInUser) => Promise<void>;
     signUp: (signUpData: DtoSignUpUser) => Promise<void>;
-    updateUserById: (updateData: DtoUpdateUser) => Promise<User>;
+    logout: () => Promise<void>;
     yandexSignIn: () => Promise<ResponseYandex0Auth>;
+    updateUserById: (updateData: DtoUpdateUser) => Promise<User>;
 }

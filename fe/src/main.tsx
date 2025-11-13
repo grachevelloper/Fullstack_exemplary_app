@@ -10,10 +10,6 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 
 const enableMocking = async () => {
-    if (process.env.NODE_ENV !== 'development') {
-        return;
-    }
-
     if (process.env.REACT_APP_ENABLE_MOCKS !== 'true') {
         return;
     }

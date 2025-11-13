@@ -5,15 +5,16 @@ declare global {
     type PartialFields<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
 }
 
-interface JwtUser {
+interface AuthUser {
     id: string;
-    email: string;
+    iat: number;
+    exp: number;
 }
 
 declare global {
     namespace Express {
         interface Request {
-            user?: JwtUser;
+            user: AuthUser;
         }
     }
 }

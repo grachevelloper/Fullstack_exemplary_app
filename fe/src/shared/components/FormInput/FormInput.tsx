@@ -1,21 +1,32 @@
-import {Form, FormItemProps, Input, InputProps} from 'antd';
+import {Form, Input, InputProps} from 'antd';
+import {TextAreaProps} from 'antd/es/input';
 
-import {useFormSync} from '../../hooks';
-import {FormField} from '../SignForm/types';
+import {FormField} from './types';
 
-interface FormInputProps extends Omit<FormItemProps, 'children'> {
+interface FormInputProps {
     field: FormField;
 }
 
-export const FormInput = ({field, ...formItemProps}: FormInputProps) => {
-    const {name, label, type, dependencies, placeholder, rules} = field;
+const {TextArea} = Input;
+
+export function FormInput({field}: FormInputProps) {
+    const {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        name,
+        label,
+        dependencies,
+        rules,
+        type,
+        placeholder,
+        className,
+        rootClassName,
+    } = field;
 
     const formInputBaseProps: InputProps = {
-        placeholder: placeholder,
+        placeholder,
         variant: 'underlined',
-        className: formItemProps.rootClassName,
+        className: rootClassName,
     };
-    const formValue = useFormSync(name, '');
 
     const renderInput = () => {
         switch (type) {
@@ -23,6 +34,18 @@ export const FormInput = ({field, ...formItemProps}: FormInputProps) => {
                 return <Input.Password {...formInputBaseProps} />;
             case 'email':
                 return <Input type='email' {...formInputBaseProps} />;
+            case 'text':
+                return (
+                    <TextArea
+                        {...(formInputBaseProps as TextAreaProps)}
+                        variant='outlined'
+                        style={{resize: 'none'}}
+                        autoSize={{
+                            maxRows: 6,
+                            minRows: 2,
+                        }}
+                    />
+                );
             default:
                 return <Input {...formInputBaseProps} />;
         }
@@ -30,14 +53,14 @@ export const FormInput = ({field, ...formItemProps}: FormInputProps) => {
 
     return (
         <Form.Item
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             name={name}
             label={label}
             rules={rules}
             dependencies={dependencies}
-            className={formItemProps.className}
-            initialValue={formValue}
+            className={className}
         >
             {renderInput()}
         </Form.Item>
     );
-};
+}

@@ -8,7 +8,7 @@ import {
 import {queryClient} from '@/shared/configs/api';
 
 import api from '../api';
-import {DtoUpdateTodo} from '../api/types';
+import {DtoCreateTodo, DtoUpdateTodo} from '../api/types'; // добавил DtoCreateTodo
 
 export const useTodosQuery = () => {
     const {data} = useSuspenseQuery({
@@ -43,6 +43,22 @@ export const useTodoMutation = () => {
                 });
                 queryClient.invalidateQueries({
                     queryKey: ['todo', variables.id],
+                });
+            },
+        },
+        queryClient
+    );
+};
+
+export const useCreateTodoMutation = () => {
+    const queryClient = useQueryClient();
+    return useMutation(
+        {
+            mutationFn: (createData: DtoCreateTodo) =>
+                api.createTodo(createData),
+            onSuccess: () => {
+                queryClient.invalidateQueries({
+                    queryKey: ['todos'],
                 });
             },
         },

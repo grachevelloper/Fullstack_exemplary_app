@@ -1,8 +1,8 @@
 import {ConfigProvider} from 'antd';
 import React, {createContext, useContext} from 'react';
 
-import {CustomThemeConfig, ThemeMode, themes} from '../configs/styles';
-import {useLocalStorage} from '../hooks/useLocalStore';
+import {CustomThemeConfig, ThemeMode, themes} from '../../configs/styles';
+import {useLocalStorage} from '../../hooks/useLocalStore';
 
 interface ThemeContextType {
     theme: CustomThemeConfig;

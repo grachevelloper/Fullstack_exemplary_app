@@ -18,9 +18,7 @@ import {AuthService} from "./auth.service";
 import {ACCESS_TOKEN_TTL_IN_MS, REFRESH_TOKEN_TTL_IN_MS} from "./constants";
 import {RefreshTokensService} from "./refresh-token/refresh-token.service";
 import {hashToken, tokenConfig} from "./utils";
-
 @Controller("auth")
-@Public()
 export class AuthController {
     constructor(
         private authService: AuthService,
@@ -28,6 +26,7 @@ export class AuthController {
         private jwtService: JwtService,
     ) {}
 
+    @Public()
     @HttpCode(HttpStatus.CREATED)
     @Post("/signup")
     async signUp(
@@ -61,6 +60,7 @@ export class AuthController {
         return result;
     }
 
+    @Public()
     @HttpCode(HttpStatus.OK)
     @Post("/signin")
     async signIn(
@@ -93,6 +93,7 @@ export class AuthController {
         return result;
     }
 
+    @Public()
     @HttpCode(HttpStatus.OK)
     @Post("/refresh")
     async refresh(
@@ -139,14 +140,17 @@ export class AuthController {
 
     @HttpCode(HttpStatus.OK)
     @Post("/logout")
-    logout(
-        @Req() request: Request,
+    async logout(
+        @Req() req: Request,
         @Res({passthrough: true}) response: Response,
     ) {
-        const refreshToken = request.cookies?.refreshToken;
-
+        const refreshToken = req.cookies?.refreshToken;
+        console.log(req.user, "bbbbbbbbbb");
         if (refreshToken) {
-            // await this.refreshTokensService.revokeToken(refreshToken);
+            await this.refreshTokensService.revokeToken(
+                req.user.id,
+                refreshToken,
+            );
         }
 
         response.clearCookie("accessToken", {

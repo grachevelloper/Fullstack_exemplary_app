@@ -4,7 +4,7 @@ import {BrowserRouter, Route, RouteProps, Routes} from 'react-router-dom';
 import {AuthLayout} from '@/shared/components/AuthLayout';
 import {Layout} from '@/shared/components/Layout';
 import {queryClient} from '@/shared/configs/api';
-import {AuthProvider, ThemeProvider} from '@/shared/context';
+import {ThemeProvider, TodoFormProvider} from '@/shared/context';
 import {usersRoutes} from '@/users/pages';
 
 import {todosRoutes} from '@/todos/pages';
@@ -19,8 +19,8 @@ function AppRouter() {
 
     return (
         <ThemeProvider>
-            <AuthProvider>
-                <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={queryClient}>
+                <TodoFormProvider>
                     <BrowserRouter>
                         <Routes>
                             <Route element={<Layout />} path='/'>
@@ -48,8 +48,8 @@ function AppRouter() {
                             </Route>
                         </Routes>
                     </BrowserRouter>
-                </QueryClientProvider>
-            </AuthProvider>
+                </TodoFormProvider>
+            </QueryClientProvider>
         </ThemeProvider>
     );
 }

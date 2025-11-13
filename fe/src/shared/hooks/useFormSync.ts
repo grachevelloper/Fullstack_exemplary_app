@@ -3,18 +3,41 @@ import {useEffect} from 'react';
 
 import {useLocalStorage} from './useLocalStore';
 
-export function useFormSync<T>(fieldKey: string, initialValue: T) {
-    const [value, setFormValue] = useLocalStorage<T>(fieldKey, initialValue);
+export function useFormSync<T>(
+    fieldKey: string,
+    initialValue: T,
+    objectLocalName?: string
+) {
+    const [localValue, setLocalFormValue] = useLocalStorage<T>(
+        objectLocalName || fieldKey,
+        initialValue
+    );
 
     const form = Form.useFormInstance();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const fieldValue: T = Form.useWatch(fieldKey, form);
-
+    const fieldValue = Form.useWatch<T>(fieldKey, form);
     useEffect(() => {
         if (fieldValue !== undefined) {
-            setFormValue(fieldValue);
+            if (objectLocalName) {
+                setLocalFormValue((prev) => {
+                    if (prev?.[fieldKey as keyof T] === fieldValue) {
+                        return prev;
+                    }
+                    return {
+                        ...prev,
+                        [fieldKey]: fieldValue,
+                    };
+                });
+            } else {
+                setLocalFormValue((prev) =>
+                    prev === fieldValue ? prev : fieldValue
+                );
+            }
         }
-    }, [fieldValue, setFormValue]);
+    }, [fieldValue, setLocalFormValue, objectLocalName, fieldKey]);
 
-    return value;
+    if (objectLocalName) {
+        return localValue?.[fieldKey as keyof T];
+    }
+
+    return localValue;
 }

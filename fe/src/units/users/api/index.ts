@@ -22,9 +22,9 @@ const Api: UserApi = {
     signUp: async (signUpData: DtoSignUpUser) => {
         await query.post(`/auth/signup`, signUpData);
     },
-    updateUserById: async ({id, ...updateData}: DtoUpdateUser) => {
-        const response = await query.patch<User>(`/user/${id}`, updateData);
-        return response;
+
+    logout: async () => {
+        await query.post('/auth/logout');
     },
 
     yandexSignIn: async () => {
@@ -40,6 +40,11 @@ const Api: UserApi = {
             }
         );
         return response.data;
+    },
+
+    updateUserById: async ({id, ...updateData}: DtoUpdateUser) => {
+        const response = await query.patch<User>(`/user/${id}`, updateData);
+        return response;
     },
 };
 

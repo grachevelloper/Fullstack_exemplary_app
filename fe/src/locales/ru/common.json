@@ -5,5 +5,9 @@
     "validation.maxLength": "Должно быть не более {{count}} символов",
 
     "button.continue": "Далее",
-    "button.back": "Назад"
+    "button.back": "Назад",
+
+    "layout.top.main": "Главная",
+    "layout.left.suggest": "Предложить ежедневку",
+    "logout": "Выйти из аккаунта"
 }

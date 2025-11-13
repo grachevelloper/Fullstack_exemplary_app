@@ -7,13 +7,19 @@
     "todo.state.planning": "Планируется",
     "todo.state.finished": "Закончено",
     "todo.state.canceled": "Отменено",
-    "todo.table.col.todo": "Задание",
+    "todo.table.col.todo": "Название",
     "todo.table.col.priority": "Приоритет",
     "todo.table.col.updated-at": "Обновлено",
     "todo.table.col.created-at": "Создано",
     "todo.table.col.state": "Статус",
+    "todo.table.col.content": "Описание",
     "todo.change.state": "Изменить статус",
     "todo.change.priority": "Изменить приоритет",
     "todo.change.content": "Изменить описание",
-    "todo.change.title": "Изменить название"
+    "todo.change.title": "Изменить название",
+    "new-todo-form.title": "Предложи свою идею",
+    "new-todo-form.ok": "Предложить",
+    "new-todo-form.close": "Отмена",
+    "new-todo-form.your-title.placeholder": "Название...",
+    "new-todo-form.your-content.placeholder": "Твоё описание..."
 }

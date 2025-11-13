@@ -20,13 +20,21 @@ export class TodosController {
     constructor(private readonly todosService: TodosService) {}
 
     @Post()
-    async create(@Body() createTodo: CreateTodoDto) {
-        return await this.todosService.create(createTodo);
+    async create(
+        @Body() createTodoData: Omit<CreateTodoDto, "userId">,
+        @Req() req: Request,
+    ) {
+        const createTodoDataWithUserId: CreateTodoDto = {
+            ...createTodoData,
+            authorId: req.user.id,
+        };
+
+        return await this.todosService.create(createTodoDataWithUserId);
     }
 
     @Get()
     async findAll(@Req() req: Request) {
-        return await this.todosService.findAll(req.user!.id);
+        return await this.todosService.findAll(req.user.id);
     }
 
     @Get(":id")
